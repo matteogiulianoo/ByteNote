@@ -33,13 +33,35 @@
         <!-- Notizie -->
         <div id="section-news">
             <h5 class="fw-bold mb-3">Notizie</h5>
-            <p class="text-muted">Qui appariranno le notizie.</p>
         </div>
 
         <!-- Spazi -->
         <div id="section-spazi" class="d-none">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5 class="fw-bold m-0">I miei Spazi</h5>
+
+                <form action="/crea" method="POST" class="d-flex gap-2 align-items-center">
+                    <input type="text" name="nome" class="form-control form-control-sm" placeholder="Nome Spazio" required>
+                    <input type="text" name="descr" class="form-control form-control-sm" placeholder="Descrizione Spazio" required>
+                    <button type="submit" class="btn btn-sm fw-semibold text-nowrap" style="background-color: #FF4A00; color: white;">
+                        Crea nuovo spazio
+                    </button>
+                </form>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <p class="m-0">Benvenuto nei tuoi spazi</p>
+                <form action="/nuovanota" method="POST" class="d-flex gap-2 align-items-center">
+                    <input type="text" name="nomeNota" class="form-control form-control-sm" placeholder="Nome Nuova Nota" required>
+                    <select name="spazioNota" class="form-select form-select-sm" required>
+                        <option value="" disabled selected>Scegli uno spazio</option>
+                        <% spazi.forEach(spazio => { %>
+                            <option value="<%= spazio.id %>"><%= spazio.nome %></option>
+                        <% }) %>
+                    </select>
+                    <button type="submit" class="btn btn-sm fw-semibold text-nowrap" style="background-color: #FF4A00; color: white;">
+                        Crea nuova nota
+                    </button>
+                </form>
             </div>
 
             <% if (spazi.length === 0) { %>
@@ -51,7 +73,7 @@
                             <div class="card-body">
                                 <h5 class="card-title"><%= spazio.nome %></h5>
                                 <p class="card-text text-muted"><%= spazio.descr ?? 'Nessuna descrizione' %></p>
-                                <small class="text-muted">Creato il <%= new Date(spazio.creation_date).toLocaleDateString('it-IT') %></small>
+                                <small class="text-muted">Creato il <%= new Date(spazio.creation_date).toLocaleDateString('it-IT') %></small> <br><br>
                             </div>
                             <ul class="list-group list-group-flush">
                                 <% if (spazio.note && spazio.note.length > 0) { %>

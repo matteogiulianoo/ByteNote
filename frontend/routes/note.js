@@ -1,0 +1,29 @@
+import express from 'express'
+import { isAuthenticated } from '../middleware/isAuthenticated.js'
+
+const router = express.Router()
+const API_URL = 'http://localhost:4000'
+
+// Logica per il bottone "crea nuova nota"
+router.post('/nuovanota', isAuthenticated, async (req, res) => {
+    const { nomeNota, spazioNota } = req.body
+    const email = req.session.email
+
+    try {
+        const response = await fetch(`${API_URL}/api/note/crea`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, nomeNota, spazioNota })
+        })
+
+        if (response.ok) {
+            res.redirect('/')
+        } else {
+            res.redirect('/')
+        }
+    } catch(e) {
+        res.status(500).send('Erorre proveniente dal server')
+    }
+})
+
+export default router

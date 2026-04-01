@@ -8,6 +8,7 @@ router.get('/', isAuthenticated, async (req, res) => {
     try {
         try {
             const response = await fetch(`${API_URL}/api/spazi/tutti`, {
+                method: 'POST',
                 headers: { 'email': req.session.email }
             })
             const spazi = await response.json()

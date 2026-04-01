@@ -6,6 +6,8 @@ import path from 'path'
 // Funzioni custom
 import homeRouter from './routes/home.js'
 import authRouter from './routes/auth.js'
+import spaceRouter from './routes/space.js'
+import noteRouter from './routes/note.js'
 
 const __dirname = import.meta.dirname
 const app = express()
@@ -32,6 +34,8 @@ app.use((req, res, next) => {
 
 app.use('/', authRouter)
 app.use('/', homeRouter)
+app.use('/', spaceRouter)
+app.use('/', noteRouter)
 
 // Mostro l'errore 404 a schermo
 app.use((req, res) => {

@@ -24,4 +24,24 @@ router.post('/tutti', async (req, res) => {
     }
 })
 
+/**
+ * Questa API permette di creare un nuovo spazio
+ */
+router.post('/crea', async (req, res) => {
+    const { email, nome, descr } = req.body
+
+    try {
+        const rows = await sql('SELECT id FROM bn_user WHERE email = ?', [email])
+        if (rows.length === 0) return res.status(401).json({ errore: 'Utente non trovato' })
+
+        const user_id = rows[0].id
+        await sql('INSERT INTO bn_space (nome, descr, user_id) VALUES (?, ?, ?)', [nome, descr, user_id])
+
+        res.json({ successo: true })
+    } catch (e) {
+        console.error(e)
+        res.status(500).json({ errore: 'Errore proveniente dal server' })
+    }
+})
+
 export default router
