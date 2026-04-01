@@ -8,6 +8,7 @@ import homeRouter from './routes/home.js'
 import authRouter from './routes/auth.js'
 import spaceRouter from './routes/space.js'
 import noteRouter from './routes/note.js'
+import settingsUserRouter from './routes/settings-user.js'
 
 const __dirname = import.meta.dirname
 const app = express()
@@ -36,6 +37,7 @@ app.use('/', authRouter)
 app.use('/', homeRouter)
 app.use('/', spaceRouter)
 app.use('/', noteRouter)
+app.use('/', settingsUserRouter)
 
 // Mostro l'errore 404 a schermo
 app.use((req, res) => {
