@@ -4,9 +4,6 @@ import bcrypt from 'bcrypt'
 
 const router = express.Router()
 
-/**
- * Questa API mi permette di accedere all'interno del sito controllando le credenziali nel DB
- */
 router.post('/login', async (req, res) => {
     const { email, password } = req.body
 
@@ -27,9 +24,6 @@ router.post('/login', async (req, res) => {
     }
 })
 
-/**
- * Questa API mi permette di registrare un utente nel database
- */
 router.post('/register', async (req, res) => {
     const { name, email, password } = req.body
 

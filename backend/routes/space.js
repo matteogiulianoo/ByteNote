@@ -11,10 +11,10 @@ router.post('/tutti', async (req, res) => {
     const email = req.headers['email']
 
     try {
-        const user_id = getIdFromEmail(email)
+        const user_id = await getIdFromEmail(email)
 
         // Controllo se l'utente ha spazi
-        const spaces = await sql("SELECT s.id, s.nome, s.descr, s.creation_date, JSON_ARRAYAGG(JSON_OBJECT('title', n.title)) AS note FROM bn_space s LEFT JOIN bn_note n ON n.space_id = s.id WHERE s.user_id = ? GROUP BY s.id", [user_id])
+        const spaces = await sql("SELECT s.id, s.nome, s.descr, s.creation_date, JSON_ARRAYAGG(JSON_OBJECT('id', n.id, 'title', n.title)) AS note FROM bn_space s LEFT JOIN bn_note n ON n.space_id = s.id WHERE s.user_id = ? GROUP BY s.id", [user_id])
         res.json(spaces)
     } catch (e) {
         console.error(e)
@@ -29,7 +29,7 @@ router.post('/crea', async (req, res) => {
     const { email, nome, descr } = req.body
 
     try {
-        const user_id = getIdFromEmail(email)
+        const user_id = await getIdFromEmail(email)
         await sql('INSERT INTO bn_space (nome, descr, user_id) VALUES (?, ?, ?)', [nome, descr, user_id])
 
         res.json({ successo: true })
@@ -46,8 +46,8 @@ router.post('/modifica', async (req, res) => {
     const { email, nome, descr, space_id } = req.body
 
     try {
-        const user_id = getIdFromEmail(email)
-        await sql('UPDATE bn_space SET nome = ?, descr = ? WHERE user_id = ? && id = ?', [nome, descr, user_id, space_id])
+        const user_id = await getIdFromEmail(email)
+        await sql('UPDATE bn_space SET nome = ?, descr = ? WHERE user_id = ? AND id = ?', [nome, descr, user_id, space_id])
 
         res.json({ successo: true })
     } catch (e) {
@@ -63,8 +63,8 @@ router.post('/elimina', async (req, res) => {
     const { email, space_id } = req.body
 
     try {
-        const user_id = getIdFromEmail(email)
-        await sql('DELETE FROM bn_space WHERE user_id = ? && id = ?', [user_id, space_id])
+        const user_id = await getIdFromEmail(email)
+        await sql('DELETE FROM bn_space WHERE user_id = ? AND id = ?', [user_id, space_id])
 
         res.json({ successo: true })
     } catch (e) {

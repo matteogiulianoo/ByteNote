@@ -16,3 +16,8 @@ export async function getIdFromEmail(email) {
         console.error(e);
     }
 }
+
+export async function isNoteOwner(note_id, user_id) {
+    const result = await sql('SELECT 1 FROM bn_note n JOIN bn_space s ON n.space_id = s.id WHERE n.id = ? AND s.user_id = ?', [note_id, user_id])
+    return result.length > 0
+}

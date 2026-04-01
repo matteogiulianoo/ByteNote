@@ -4,6 +4,27 @@ import { isAuthenticated } from '../middleware/isAuthenticated.js'
 const router = express.Router()
 const API_URL = 'http://localhost:4000'
 
+// Finestra di una nota
+router.get('/nota/:id', isAuthenticated, async (req, res) => {
+    const note_id = req.params.id
+    const email = req.session.email
+
+    try {
+        const response = await fetch(`${API_URL}/api/note/popolaNote`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, note_id })
+        })
+
+        if (response.status === 403) return res.redirect('/')
+
+        const nota = await response.json()
+        res.render('pages/nota', { nota: nota[0] })
+    } catch(e) {
+        res.status(500).send('Erorre proveniente dal server')
+    }
+})
+
 // Logica per il bottone "crea nuova nota"
 router.post('/nuovanota', isAuthenticated, async (req, res) => {
     const { nomeNota, spazioNota } = req.body
