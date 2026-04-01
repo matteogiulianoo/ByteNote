@@ -1,0 +1,35 @@
+<div class="min-vh-100 d-flex align-items-center justify-content-center" style="background-color: #1F1F1F;">
+    <div class="card shadow border-0" style="width: 100%; max-width: 420px;">
+        <div class="card-body p-5">
+
+            <h4 class="text-center fw-bold mb-2">Accedi a ByteNote</h4>
+            <p class="text-center text-muted mb-4">Inserisci le tue credenziali per entrare</p>
+
+            <% if (locals.errore) { %>
+                <div class="alert alert-danger"><%= errore %></div>
+            <% } %>
+
+            <form action="/login" method="POST">
+                <div class="mb-3">
+                    <label for="email" class="form-label fw-semibold">Email</label>
+                    <input type="email" id="email" name="email" class="form-control form-control-lg" placeholder="nome@esempio.com" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="password" class="form-label fw-semibold">Password</label>
+                    <input type="password" id="password" name="password" class="form-control form-control-lg" required>
+                </div>
+
+                <div class="d-grid mb-3">
+                    <button type="submit" class="btn btn-lg fw-semibold" style="background-color: #FF4A00; color: white;">Accedi</button>
+                </div>
+
+                <div class="text-center">
+                    <span class="text-muted">Non hai un account? </span>
+                    <a href="/register" style="color: #FF4A00;">Creane uno</a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
