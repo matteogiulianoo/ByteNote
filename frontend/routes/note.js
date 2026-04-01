@@ -47,4 +47,24 @@ router.post('/nuovanota', isAuthenticated, async (req, res) => {
     }
 })
 
+// Logica per il bottone "salva"
+router.post('/salvanota', isAuthenticated, async (req, res) => {
+    const email = req.session.email
+    const { title, context } = req.body
+
+    try {
+        const response = await fetch(`${API_URL}/api/note/modifica`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, title, context })
+        })
+
+        if (response.status === 403) return res.redirect('/')
+    } catch(e) {
+        res.status(500).send('Erorre proveniente dal server')
+    }
+})
+
+// Logica per il bottone "chiudi"
+
 export default router
