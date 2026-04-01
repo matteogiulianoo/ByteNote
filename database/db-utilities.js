@@ -1,4 +1,4 @@
-import { connect } from './db-connection'
+import { connect } from './db-connection.js'
 
 /**
  * Questa funzione esegue le query che li passiamo
