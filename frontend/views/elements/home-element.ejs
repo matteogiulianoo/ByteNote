@@ -38,24 +38,34 @@
 
         <!-- Spazi -->
         <div id="section-spazi" class="d-none">
-            <h5 class="fw-bold mb-3">I miei Spazi</h5>
-            <div class="d-flex flex-wrap gap-3" style="max-height: 480px; overflow: hidden;">
-                <div class="card" style="width: 18rem">
-                    <div class="card-body">
-                        <h5 class="card-title">Nome Spazio</h5>
-                        <p class="card-text">Descrizione Spazio</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Nome Nota 1</li>
-                        <li class="list-group-item">Nome Nota 2</li>
-                        <li class="list-group-item">Nome Nota 3</li>
-                    </ul>
-                    <div class="card-body d-flex justify-content-between">
-                        <a href="#" style="color: #FF4A00; text-decoration: none; font-size: 1.4rem;">&#8592;</a>
-                        <a href="#" style="color: #FF4A00; text-decoration: none; font-size: 1.4rem;">&#8594;</a>
-                    </div>
-                </div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold m-0">I miei Spazi</h5>
             </div>
+
+            <% if (spazi.length === 0) { %>
+                <p class="text-muted">Non hai ancora creato nessuno spazio.</p>
+            <% } else { %>
+                <div class="d-flex flex-wrap gap-3">
+                    <% spazi.forEach(spazio => { %>
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                                <h5 class="card-title"><%= spazio.nome %></h5>
+                                <p class="card-text text-muted"><%= spazio.descr ?? 'Nessuna descrizione' %></p>
+                                <small class="text-muted">Creato il <%= new Date(spazio.creation_date).toLocaleDateString('it-IT') %></small>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <% if (spazio.note && spazio.note.length > 0) { %>
+                                    <% spazio.note.forEach(nota => { %>
+                                        <li class="list-group-item"><%= nota.title %></li>
+                                    <% }) %>
+                                <% } else { %>
+                                    <li class="list-group-item text-muted">Nessuna nota</li>
+                                <% } %>
+                            </ul>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } %>
         </div>
 
     </div>
@@ -63,6 +73,7 @@
 </div>
 
 <script>
+    // Da qua si possono caricare le varie sezioni!
     document.querySelectorAll('[data-section]').forEach(tab => {
         tab.addEventListener('click', (e) => {
             e.preventDefault()
