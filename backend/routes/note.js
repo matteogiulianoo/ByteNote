@@ -1,5 +1,6 @@
 import express from 'express'
 import { sql } from './../../database/db-utilities.js'
+import { getIdFromEmail } from '../utilities/utility.js'
 
 const router = express.Router()
 
@@ -10,11 +11,7 @@ router.post('/crea', async (req, res) => {
     const { email, nomeNota, spazioNota } = req.body
 
     try {
-        // Prendo l'id dell'utente
-        const rows = await sql('SELECT id FROM bn_user WHERE email = ?', [email])
-        if (rows.length === 0) return res.status(401).json({ errore: 'Utente non trovato' })
-
-        const user_id = rows[0].id
+        const user_id = getIdFromEmail(email)
 
         // Controllo che l'id dell'utente è proprietario dello spazio scelto
         const space = await sql('SELECT user_id FROM bn_space WHERE id = ?', [spazioNota])
