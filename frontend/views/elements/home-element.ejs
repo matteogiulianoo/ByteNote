@@ -33,6 +33,20 @@
         <!-- Notizie -->
         <div id="section-news">
             <h5 class="fw-bold mb-3">Notizie</h5>
+            <div class="d-flex flex-wrap gap-3">
+                <% news.forEach(articolo => { %>
+                    <div class="card border-0 shadow-sm" style="width: 18rem;">
+                        <% if (articolo.immagine) { %>
+                            <img src="<%= articolo.immagine %>" class="card-img-top" style="height: 140px; object-fit: cover;">
+                        <% } %>
+                        <div class="card-body">
+                            <p class="card-text"><small class="text-muted"><%= articolo.pubDate %></small></p>
+                            <h6 class="card-title fw-semibold"><%= articolo.title %></h6>
+                            <a href="<%= articolo.link %>" target="_blank" style="color: #FF4A00;">Leggi articolo →</a>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
         </div>
 
         <!-- Spazi -->
