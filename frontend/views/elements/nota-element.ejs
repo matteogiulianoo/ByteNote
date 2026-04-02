@@ -42,10 +42,9 @@
         <div class="d-flex gap-2 m-2">
             <input id="title" name="title" style="font-weight: bold;" value="<%= nota.title ?? '' %>" />
             <!-- Bottone per interagire con AI -->
-            <form action="/ai" method="POST" class="m-0" onsubmit="save()">
-                <input type="hidden" name="context" id="hiddenContext">
-                <button type="submit" class="btn fw-semibold" style="background-color: azure;">🧠</button>
-            </form>
+            <button onclick="askAI()" class="btn fw-semibold" style="background-color: azure;">
+                🧠
+            </button>
         </div>
         <div id="editor">
             <%= nota.context ?? '' %>
@@ -62,6 +61,30 @@
 
             const title = document.getElementById('title').value;
             document.getElementById('hiddenTitle').value = title;
+        }
+
+
+        /**
+         * Domanda all'AI coe sistemare gli appunti
+         */
+        async function askAI() {
+            const context = quill.getText();
+
+            const response = await fetch('/ai', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ context })
+            });
+
+            const data = await response.json()
+
+            if (!response.ok) {
+                alert(data.errore || "Errore durante la richiesta AI")
+                return
+            }
+
+            quill.setText(data.result);
         }
     </script>
 </div>
