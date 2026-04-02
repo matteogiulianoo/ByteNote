@@ -39,8 +39,14 @@
     </div>
 
     <div>
-        <input id="title" name="title" style="font-weight: bold;" value="<%= nota.title ?? '' %>" />
-
+        <div class="d-flex gap-2 m-2">
+            <input id="title" name="title" style="font-weight: bold;" value="<%= nota.title ?? '' %>" />
+            <!-- Bottone per interagire con AI -->
+            <form action="/ai" method="POST" class="m-0" onsubmit="save()">
+                <input type="hidden" name="context" id="hiddenContext">
+                <button type="submit" class="btn fw-semibold" style="background-color: azure;">🧠</button>
+            </form>
+        </div>
         <div id="editor">
             <%= nota.context ?? '' %>
         </div>
