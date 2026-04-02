@@ -58,7 +58,7 @@ router.post('/popolaNote', async (req, res) => {
         if (!await isNoteOwner(note_id, user_id)) 
             return res.status(403).json({ errore: 'Non autorizzato' })
 
-        const data = await sql('SELECT title, context, modified_date FROM bn_note WHERE id = ?', [note_id])
+        const data = await sql('SELECT id, title, context, modified_date FROM bn_note WHERE id = ?', [note_id])
         res.json(data)
     } catch (e) {
         console.error(e)

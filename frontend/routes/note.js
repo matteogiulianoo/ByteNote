@@ -50,16 +50,17 @@ router.post('/nuovanota', isAuthenticated, async (req, res) => {
 // Logica per il bottone "salva"
 router.post('/salvanota', isAuthenticated, async (req, res) => {
     const email = req.session.email
-    const { title, context } = req.body
+    const { title, context, note_id } = req.body
 
     try {
         const response = await fetch(`${API_URL}/api/note/modifica`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, title, context })
+            body: JSON.stringify({ email, title, context, note_id })
         })
 
         if (response.status === 403) return res.redirect('/')
+        res.redirect(`/nota/${note_id}`)
     } catch(e) {
         res.status(500).send('Erorre proveniente dal server')
     }

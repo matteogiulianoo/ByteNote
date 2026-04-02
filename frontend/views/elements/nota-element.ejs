@@ -6,7 +6,10 @@
         <!-- Navbar -->
         <ul class="nav nav-tabs border-0 gap-2">
             <form action="/salvanota" method="POST" class="m-0" onsubmit="save()">
+                <!-- Con questi input nascosti prendiamo i dati che ci servono per modificare la nota -->
                 <input type="hidden" name="context" id="hiddenContext">
+                <input type="hidden" name="title" id="hiddenTitle">
+                <input type="hidden" name="note_id" value="<%= nota.id %>">
                 <button type="submit" class="btn fw-semibold" style="background-color: #15960e; color: white;">
                     Salva
                 </button>
@@ -42,7 +45,7 @@
         const quill = new Quill('#editor', { theme: 'snow' });
 
         function save() {
-            const context = quill.root.innerHTML;
+            const context = quill.getText();
             document.getElementById('hiddenContext').value = context;
 
             const title = document.getElementById('title').value;
