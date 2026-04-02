@@ -18,6 +18,16 @@ export async function getIdFromEmail(email) {
 }
 
 export async function isNoteOwner(note_id, user_id) {
-    const result = await sql('SELECT 1 FROM bn_note n JOIN bn_space s ON n.space_id = s.id WHERE n.id = ? AND s.user_id = ?', [note_id, user_id])
-    return result.length > 0
+    const res = await sql('SELECT 1 FROM bn_note n JOIN bn_space s ON n.space_id = s.id WHERE n.id = ? AND s.user_id = ?', [note_id, user_id])
+    return res.length > 0
+}
+
+export async function isTagOwner(tag_id, user_id) {
+    const res = await sql('SELECT 1 FROM bn_tag WHERE id = ? AND user_id = ?', [tag_id, user_id])
+    return res.length > 0
+}
+
+export async function noteHasTag(note_id) {
+    const res = await sql('SELECT 1 FROM bn_note_tag WHERE note_id = ?', [note_id])
+    return res.length > 0
 }

@@ -49,10 +49,21 @@
         <div class="d-flex gap-2 m-2">
             <input id="title" name="title" style="font-weight: bold; background: transparent; fill: none; border: none;" value="<%= nota.title ?? '' %>" />
             
-            <select name="spazioNota" class="form-select form-select-sm" required style="width: 165px;" onchange="cambiaTag()">
-                <option value="" disabled selected>Nessuna Etichetta</option>
-                <option value=""></option>
-            </select>
+            <div class="d-flex flex-wrap gap-1">
+                <% tag.forEach(tagg => { %>
+                    <div class="form-check">
+                        <input 
+                            class="form-check-input" 
+                            type="checkbox" 
+                            value="<%= tagg.id %>"
+                            data-note-id="<%= nota.id %>"
+                            <%= tagInNota.some(t => t.tag_id === tagg.id) ? 'checked' : '' %>
+                            onchange="changeTag(this)"
+                        >
+                        <label class="form-check-label"><%= tagg.name %></label>
+                    </div>
+                <% }) %>
+            </div>
         </div>
 
         <div id="editor">
@@ -84,7 +95,7 @@
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
                 body: JSON.stringify({ context })
-            });
+            })
 
             const data = await response.json()
 
@@ -94,6 +105,25 @@
             }
 
             quill.setText(data.result);
+        }
+
+        async function changeTag(checkbox) {
+            const tag_id = checkbox.value
+            const note_id = checkbox.dataset.noteId
+            const checked = checkbox.checked
+
+            const response = await fetch('/cambiaTag', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ tag_id, note_id, checked })
+            })
+
+            const data = await response.json()
+            if (!response.ok) {
+                alert(data.errore || "Errore durante il cambio dell'etichetta")
+                checkbox.checked = !checked
+            }
         }
     </script>
 </div>
