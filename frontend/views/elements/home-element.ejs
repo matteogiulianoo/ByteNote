@@ -1,26 +1,28 @@
 <div class="d-flex flex-column min-vh-100" style="background-color: #F4F4F4;">
 
     <!-- Header -->
-    <div class="d-flex align-items-center justify-content-between px-4 py-3 border-bottom shadow-sm" style="background-color: #654b40;">
-    
+    <div class="d-flex align-items-center justify-content-between px-4 border-bottom position-relative" style="background-color: #2A1F1A; height: 60px;">
+
+        <span class="fw-bold fs-5 text-white">Byte<span style="color: #FF4A00;">Note</span></span>
+
         <!-- Navbar -->
-        <ul class="nav nav-tabs border-0 gap-2">
+        <ul class="nav position-absolute start-50 translate-middle-x">
             <li class="nav-item">
-                <a class="nav-link fw-semibold" style="color: #ffffff; border-bottom: 2px solid #FF4A00;" href="#news" data-section="news">Notizie</a>
+                <a class="nav-link fw-medium px-4 py-1 rounded-pill" style="color: #FF7A40; background-color: rgba(255,74,0,0.15);" href="#" data-section="news">Notizie</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link fw-semibold" style="color: rgba(255,255,255,0.6);" href="#spazi" data-section="spazi">I miei Spazi</a>
+                <a class="nav-link fw-medium px-4 py-1 rounded-pill" style="color: rgba(255,255,255,0.45);" href="#" data-section="spazi">I miei Spazi</a>
             </li>
         </ul>
 
         <!-- Bottoni -->
         <div class="d-flex gap-2">
-            <a href="/settings-user" class="btn fw-semibold" style="border: 1px solid rgba(255,255,255,0.4); color: white;">
+            <a href="/settings-user" class="btn btn-sm fw-medium" style="border: 0.5px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.7);">
                 Impostazioni
             </a>
             <form action="/logout" method="POST" class="m-0">
-                <button type="submit" class="btn fw-semibold" style="background-color: #FF4A00; color: white;">
-                    ➜]
+                <button type="submit" class="btn btn-sm fw-semibold" style="background-color: #FF4A00; color: white;">
+                    Esci →
                 </button>
             </form>
         </div>
@@ -32,17 +34,25 @@
 
         <!-- Notizie -->
         <div id="section-news">
-            <h5 class="fw-bold mb-3">Notizie</h5>
-            <div class="d-flex flex-wrap gap-3">
+            <div class="d-flex align-items-baseline justify-content-between mb-4">
+                <h5 class="fw-bold mb-0">Notizie</h5>
+                <small class="text-muted">Aggiornate oggi</small>
+            </div>
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-3">
                 <% news.forEach(articolo => { %>
-                    <div class="card border-0 shadow-sm" style="width: 18rem;">
-                        <% if (articolo.immagine) { %>
-                            <img src="<%= articolo.immagine %>" class="card-img-top" style="height: 140px; object-fit: cover;">
-                        <% } %>
-                        <div class="card-body">
-                            <p class="card-text"><small class="text-muted"><%= articolo.pubDate %></small></p>
-                            <h6 class="card-title fw-semibold"><%= articolo.title %></h6>
-                            <a href="<%= articolo.link %>" target="_blank" style="color: #FF4A00;">Leggi articolo →</a>
+                    <div class="col">
+                        <div class="card h-100 border shadow-none" style="border-color: #E5E0D8 !important; border-radius: 12px; overflow: hidden;">
+                            <% if (articolo.immagine) { %>
+                                <img src="<%= articolo.immagine %>" class="card-img-top" style="height: 130px; object-fit: cover;">
+                            <% } else { %>
+                                <div class="bg-light d-flex align-items-center justify-content-center text-muted" style="height: 130px; font-size: 11px; letter-spacing: 0.05em;">NESSUNA IMMAGINE</div>
+                            <% } %>
+                            <div class="card-body d-flex flex-column gap-1 p-3">
+                                <p class="text-uppercase text-muted mb-0" style="font-size: 10px; letter-spacing: 0.06em;"><%= articolo.pubDate %></p>
+                                <h6 class="card-title fw-medium mb-0" style="font-size: 13px; line-height: 1.45;"><%= articolo.title %></h6>
+                                <a href="<%= articolo.link %>" target="_blank" class="mt-auto pt-1 fw-semibold text-decoration-none" style="color: #FF4A00; font-size: 11px;">Leggi articolo →</a>
+                            </div>
                         </div>
                     </div>
                 <% }) %>
@@ -51,53 +61,76 @@
 
         <!-- Spazi -->
         <div id="section-spazi" class="d-none">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="fw-bold m-0">I miei Spazi</h5>
 
-                <form action="/crea" method="POST" class="d-flex gap-2 align-items-center">
-                    <input type="text" name="nome" class="form-control form-control-sm" placeholder="Nome Spazio" required>
-                    <input type="text" name="descr" class="form-control form-control-sm" placeholder="Descrizione Spazio" required>
-                    <button type="submit" class="btn btn-sm fw-semibold text-nowrap" style="background-color: #FF4A00; color: white;">
-                        Crea nuovo spazio
-                    </button>
-                </form>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <p class="m-0">Benvenuto nei tuoi spazi</p>
-                <form action="/nuovanota" method="POST" class="d-flex gap-2 align-items-center">
-                    <input type="text" name="nomeNota" class="form-control form-control-sm" placeholder="Nome Nuova Nota" required>
-                    <select name="spazioNota" class="form-select form-select-sm" required>
-                        <option value="" disabled selected>Scegli uno spazio</option>
-                        <% spazi.forEach(spazio => { %>
-                            <option value="<%= spazio.id %>"><%= spazio.nome %></option>
-                        <% }) %>
-                    </select>
-                    <button type="submit" class="btn btn-sm fw-semibold text-nowrap" style="background-color: #FF4A00; color: white;">
-                        Crea nuova nota
-                    </button>
-                </form>
+            <div class="d-flex align-items-baseline justify-content-between mb-4">
+                <h5 class="fw-bold mb-0">I miei Spazi</h5>
+                <small class="text-muted"><%= spazi.length %> spazi attivi</small>
             </div>
 
+            <!-- Toolbar azioni -->
+            <div class="card border shadow-none mb-4 p-3" style="border-color: #E5E0D8 !important; border-radius: 10px; background-color: #fff;">
+                <div class="d-flex flex-wrap align-items-center gap-2">
+
+                    <!-- Crea spazio -->
+                    <form action="/crea" method="POST" class="d-flex gap-2 align-items-center flex-wrap">
+                        <input type="text" name="nome" class="form-control form-control-sm" placeholder="Nome spazio" required style="width: 150px;">
+                        <input type="text" name="descr" class="form-control form-control-sm" placeholder="Descrizione" required style="width: 180px;">
+                        <button type="submit" class="btn btn-sm fw-semibold text-nowrap text-white" style="background-color: #FF4A00;">
+                            + Crea spazio
+                        </button>
+                    </form>
+
+                    <div class="vr mx-1 d-none d-md-block"></div>
+
+                    <!-- Crea nota -->
+                    <form action="/nuovanota" method="POST" class="d-flex gap-2 align-items-center flex-wrap">
+                        <input type="text" name="nomeNota" class="form-control form-control-sm" placeholder="Nome nota" required style="width: 150px;">
+                        <select name="spazioNota" class="form-select form-select-sm" required style="width: 160px;">
+                            <option value="" disabled selected>Scegli spazio</option>
+                            <% spazi.forEach(spazio => { %>
+                                <option value="<%= spazio.id %>"><%= spazio.nome %></option>
+                            <% }) %>
+                        </select>
+                        <button type="submit" class="btn btn-sm fw-semibold text-nowrap text-white" style="background-color: #FF4A00;">
+                            + Crea nota
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+
+            <!-- Griglia spazi -->
             <% if (spazi.length === 0) { %>
-                <p class="text-muted">Non hai ancora creato nessuno spazio.</p>
+                <div class="text-center text-muted py-5">
+                    <p class="mb-1">Non hai ancora creato nessuno spazio.</p>
+                    <small>Usa il modulo qui sopra per iniziare.</small>
+                </div>
             <% } else { %>
-                <div class="d-flex flex-wrap gap-3">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-3">
                     <% spazi.forEach(spazio => { %>
-                        <div class="card" style="width: 18rem;">
-                            <div class="card-body">
-                                <h5 class="card-title"><%= spazio.nome %></h5>
-                                <p class="card-text text-muted"><%= spazio.descr ?? 'Nessuna descrizione' %></p>
-                                <small class="text-muted">Creato il <%= new Date(spazio.creation_date).toLocaleDateString('it-IT') %></small> <br><br>
+                        <div class="col">
+                            <div class="card h-100 border shadow-none" style="border-color: #E5E0D8 !important; border-radius: 12px; overflow: hidden;">
+                                <div class="card-body p-3">
+                                    <h6 class="fw-semibold mb-1" style="font-size: 14px;"><%= spazio.nome %></h6>
+                                    <p class="text-muted mb-2" style="font-size: 12px; line-height: 1.45;"><%= spazio.descr ?? 'Nessuna descrizione' %></p>
+                                    <p class="text-uppercase text-muted mb-0" style="font-size: 10px; letter-spacing: 0.04em;">
+                                        Creato il <%= new Date(spazio.creation_date).toLocaleDateString('it-IT') %>
+                                    </p>
+                                </div>
+
+                                <ul class="list-group list-group-flush" style="border-top: 0.5px solid #F0EBE4;">
+                                    <% if (spazio.note && spazio.note.length > 0) { %>
+                                        <% spazio.note.forEach(nota => { %>
+                                            <li class="list-group-item px-3 py-2 border-0" style="font-size: 12px; background: transparent;">
+                                                <span class="me-2" style="color: #FF4A00;">•</span>
+                                                <a href="/nota/<%= nota.id %>" class="text-decoration-none text-dark"><%= nota.title %></a>
+                                            </li>
+                                        <% }) %>
+                                    <% } else { %>
+                                        <li class="list-group-item px-3 py-2 border-0 text-muted fst-italic" style="font-size: 12px; background: transparent;">Nessuna nota</li>
+                                    <% } %>
+                                </ul>
                             </div>
-                            <ul class="list-group list-group-flush">
-                                <% if (spazio.note && spazio.note.length > 0) { %>
-                                    <% spazio.note.forEach(nota => { %>
-                                        <li class="list-group-item"><a href="/nota/<%= nota.id %>"><%= nota.title %></a></li>
-                                    <% }) %>
-                                <% } else { %>
-                                    <li class="list-group-item text-muted">Nessuna nota</li>
-                                <% } %>
-                            </ul>
                         </div>
                     <% }) %>
                 </div>
@@ -109,22 +142,24 @@
 </div>
 
 <script>
-    // Da qua si possono caricare le varie sezioni!
-    document.querySelectorAll('[data-section]').forEach(tab => {
+    const tabs = document.querySelectorAll('[data-section]')
+    const sections = document.querySelectorAll('[id^="section-"]')
+
+    tabs.forEach(tab => {
         tab.addEventListener('click', (e) => {
             e.preventDefault()
             const target = tab.getAttribute('data-section')
 
-            document.querySelectorAll('[id^="section-"]').forEach(s => s.classList.add('d-none'))
+            sections.forEach(s => s.classList.add('d-none'))
             document.getElementById('section-' + target).classList.remove('d-none')
 
-            document.querySelectorAll('[data-section]').forEach(t => {
-                t.style.color = 'rgba(255,255,255,0.6)'
-                t.style.borderBottom = 'none'
+            tabs.forEach(t => {
+                t.style.color = 'rgba(255,255,255,0.45)'
+                t.style.backgroundColor = 'transparent'
             })
 
-            tab.style.color = '#ffffff'
-            tab.style.borderBottom = '2px solid #FF4A00'
+            tab.style.color = '#FF7A40'
+            tab.style.backgroundColor = 'rgba(255,74,0,0.15)'
         })
     })
 </script>

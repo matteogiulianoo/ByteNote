@@ -1,51 +1,60 @@
 <div class="d-flex flex-column min-vh-100" style="background-color: #F4F4F4;">
 
     <!-- Header -->
-    <div class="d-flex align-items-center justify-content-between px-4 py-3 border-bottom shadow-sm" style="background-color: #654b40;">
+    <div class="d-flex align-items-center justify-content-between px-4 border-bottom position-relative" style="background-color: #2A1F1A; height: 60px;">
     
+        <!-- Bottoni -->
+        <div class="d-flex gap-2">
+            <!-- Bottone per interagire con AI -->
+            <button onclick="askAI()" class="nav-link fw-medium px-4 py-1 rounded-pill" style="color: #FF7A40; background-color: rgba(255,74,0,0.15);">
+                🧠
+            </button>
+        </div>
+
         <!-- Navbar -->
-        <ul class="nav nav-tabs border-0 gap-2">
-            <form action="/salvanota" method="POST" class="m-0" onsubmit="save()">
-                <!-- Con questi input nascosti prendiamo i dati che ci servono per modificare la nota -->
-                <input type="hidden" name="context" id="hiddenContext">
-                <input type="hidden" name="title" id="hiddenTitle">
-                <input type="hidden" name="note_id" value="<%= nota.id %>">
-                <button type="submit" class="btn fw-semibold" style="background-color: #15960e; color: white;">
-                    Salva
-                </button>
-            </form>
-            <form action="/chiudinota" method="GET" class="m-0">
-                <button type="submit" class="btn fw-semibold" style="background-color: #FF4A00; color: white;">
-                    Chiudi 
-                </button>
-            </form>
+        <ul class="nav position-absolute start-50 translate-middle-x">
+            <li class="nav-item">
+                <form action="/salvanota" method="POST" class="m-0" onsubmit="save()">
+                    <!-- Con questi input nascosti prendiamo i dati che ci servono per modificare la nota -->
+                    <input type="hidden" name="context" id="hiddenContext">
+                    <input type="hidden" name="title" id="hiddenTitle">
+                    <input type="hidden" name="note_id" value="<%= nota.id %>">
+                    <button type="submit" class="nav-link fw-medium px-4 py-1 rounded-pill" style="color: #FF7A40; background-color: rgba(255,74,0,0.15);">
+                        Salva
+                    </button>
+                </form>
+            </li>
+            <li class="nav-item">
+                <form action="/chiudinota" method="GET" class="m-0">
+                    <button type="submit" class="nav-link fw-medium px-4 py-1 rounded-pill" style="color: rgba(255,255,255,0.45);">
+                        Chiudi 
+                    </button>
+                </form>
+            </li>
         </ul>
 
         <!-- Bottoni -->
         <div class="d-flex gap-2">
             <form action="/eliminanota" method="POST" class="m-0">
                 <input type="hidden" name="note_id" value="<%= nota.id %>">
-                <button type="submit" class="btn fw-semibold" style="background-color: #ff0000; color: white;">
+                <button type="submit" class="btn btn-sm fw-medium" style="border: 0.5px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.7);">
                     Elimina Nota
                 </button>
             </form>
-            <form action="/logout" method="POST" class="m-0">
-                <button type="submit" class="btn fw-semibold" style="background-color: #FF4A00; color: white;">
-                    ➜]
-                </button>
-            </form>
         </div>
-
+        
     </div>
 
     <div>
         <div class="d-flex gap-2 m-2">
-            <input id="title" name="title" style="font-weight: bold;" value="<%= nota.title ?? '' %>" />
-            <!-- Bottone per interagire con AI -->
-            <button onclick="askAI()" class="btn fw-semibold" style="background-color: azure;">
-                🧠
-            </button>
+            <input id="title" name="title" style="font-weight: bold; background: transparent; fill: none; border: none;" value="<%= nota.title ?? '' %>" />
+            
+            <select name="spazioNota" class="form-select form-select-sm" required style="width: 165px;" onchange="cambiaTag()">
+                <option value="" disabled selected>Nessuna Etichetta</option>
+                <option value=""></option>
+            </select>
         </div>
+
         <div id="editor">
             <%= nota.context ?? '' %>
         </div>
