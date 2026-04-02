@@ -2,6 +2,11 @@ backend/node_modules/*
 frontend/node_modules/*
 database/node_modules/*
 
+# Rimuovo i file che uso per avviare contemporaneamente i 2 progetti
+package.json
+package-lock.json
+node_modules
+
 # File temporanei/data
 backend/data.dat
 .DS_Store
