@@ -67,5 +67,27 @@ router.post('/salvanota', isAuthenticated, async (req, res) => {
 })
 
 // Logica per il bottone "chiudi"
+router.get('/chiudinota', isAuthenticated, async (req, res) => {
+    res.redirect(`/`)
+})
+
+// Logica per il bottone "elimina nota"
+router.post('/eliminanota', isAuthenticated, async (req, res) => {
+    const email = req.session.email
+    const { note_id } = req.body
+
+    try {
+        const response = await fetch(`${API_URL}/api/note/elimina`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, note_id })
+        })
+
+        if (response.status === 403) return res.redirect('/')
+        res.redirect(`/`)
+    } catch(e) {
+        res.status(500).send('Erorre proveniente dal server')
+    }
+})
 
 export default router
